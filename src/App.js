@@ -3,6 +3,21 @@ import './App.css';
 import ToDo from './components/ToDo.js';
 
 class App extends Component {
+
+/*
+  const List = (props) => (
+    <ul>
+      {props.items.map((description, index) => (
+        <li key={index}>
+          {description}
+          <br />
+          <button onClick={() => props.removeItem(index)}>Remove</button>
+        </li>
+      ))}
+    </ul>
+  );
+*/
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,13 +49,21 @@ class App extends Component {
     this.setState({ todos: todos });
   }
 
+  removeItem(index) {
+    const todos = this.state.todos.slice();
+    const todo = todos[index];
+    //todo.isCompleted = todo.isCompleted ? false : true;
+    this.setState({ todos: todos.filter( (t) => t !== todo) });
+  }
+
   render() {
     return (
       <div className="App">
         <ul>
           { this.state.todos.map( (todo, index) =>
             <ToDo key={ index } description={ todo.description }
-            isCompleted={ todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) } />
+            isCompleted={ todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) }
+            removeItem={ () => this.removeItem(index)} />
           )}
         </ul>
         <form onSubmit={ (e) => this.handleSubmit(e) }>
